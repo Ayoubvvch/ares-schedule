@@ -39,27 +39,26 @@ jobs:
 
       - name: Prepare APK Asset
         run: |
-          cp app/build/outputs/apk/release/app-release.apk Ares-Schedule-v1.0.2.apk
-          ls -lh Ares-Schedule-v1.0.2.apk
+          cp app/build/outputs/apk/release/app-release.apk Ares-Schedule-v1.0.3.apk
+          ls -lh Ares-Schedule-v1.0.3.apk
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.2
-          name: "Ares Schedule v1.0.2 🏖️ (Void Holidays & Moroccan Calendar Edition)"
+          tag_name: v1.0.3
+          name: "Ares Schedule v1.0.3 🏖️ (National Unity Day & Next Friday Holiday Detection)"
           body: |
-            ## 🏖️ Ares Schedule v1.0.2 (Moroccan Holidays & Void Mode)
+            ## 🏖️ Ares Schedule v1.0.3 (National Unity Day & Holiday Intelligence)
             
-            ### ✨ What's New in v1.0.2:
-            - 🇲🇦 **Official Moroccan School Holidays (2026/2027):** Integrated all 15 official school, national, and religious holidays (57 total days off) with full dates and durations.
-            - 🏖️ **Automatic Void Day Detection:** When opening the app on any official holiday, the day automatically transitions to **Void Holiday Mode** (no classes, ambient emerald glow, holiday details, and relaxation note).
-            - 📅 **Dedicated Holidays Calendar Tab (`🏖️ Holidays`):** Browse all Moroccan vacations chronologically with live countdowns (`Active Now`, `In X Days`, `Completed`).
-            - 👁️ **Interactive Void Mode Preview:** Instant preview button for each holiday so you can test and view the Void screen anytime.
-            - ⚡ **OLED Ultra Black Theme:** Retains pitch-black contrast and maximum power efficiency for AMOLED screens.
+            ### ✨ What's Fixed & Added in v1.0.3:
+            - 🇲🇦 **Today is a Holiday (National Unity Day - 31 Oct):** Added the official National Unity Day (`عيد الوحدة الوطني - السبت 31 أكتوبر 2026`) into the Moroccan holiday calendar. Today is now detected immediately on startup as a full **Void Day**!
+            - 🔔 **Next Friday Holiday Detection:** Intelligent notification alerts that next Friday (06 Nov) is an official holiday (`ذكرى المسيرة الخضراء`).
+            - 📅 **Complete 16 Holidays (58 Total Days Off):** Comprehensive 2026/2027 Moroccan official school and national calendar.
+            - 🏖️ **Dynamic Day Tab Detection:** Clicking any day tab (e.g. today or Saturday) checks against the calendar and displays Void Day when applicable.
             
             ### 📥 Download & Install
-            Download and install `Ares-Schedule-v1.0.2.apk` below directly on your Android phone.
+            Download and install `Ares-Schedule-v1.0.3.apk` below directly on your Android phone.
           files: |
-            Ares-Schedule-v1.0.2.apk
+            Ares-Schedule-v1.0.3.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

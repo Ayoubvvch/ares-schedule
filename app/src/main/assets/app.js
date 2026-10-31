@@ -65,7 +65,7 @@ const SCHEDULE = {
   }
 };
 
-// MOROCCAN OFFICIAL SCHOOL HOLIDAYS 2026/2027
+// MOROCCAN OFFICIAL SCHOOL HOLIDAYS 2026/2027 (16 OFFICIAL HOLIDAYS)
 const MOROCCAN_HOLIDAYS_2026_2027 = [
   {
     id: "mawlid",
@@ -96,6 +96,20 @@ const MOROCCAN_HOLIDAYS_2026_2027 = [
     desc: "من الأحد 18 أكتوبر إلى الأحد 25 أكتوبر 2026"
   },
   {
+    id: "unity_day",
+    title: "National Unity Day",
+    arabic: "عيد الوحدة الوطني",
+    category: "وطنية",
+    catEn: "National",
+    badgeClass: "badge-cat-national",
+    startDate: "2026-10-31",
+    endDate: "2026-10-31",
+    days: 1,
+    icon: "🇲🇦",
+    color: "#EF4444",
+    desc: "السبت 31 أكتوبر 2026 (عطلة وطنية رسمية بالمملكة)"
+  },
+  {
     id: "green_march",
     title: "Green March Anniversary",
     arabic: "ذكرى المسيرة الخضراء",
@@ -107,7 +121,7 @@ const MOROCCAN_HOLIDAYS_2026_2027 = [
     days: 1,
     icon: "🇲🇦",
     color: "#EF4444",
-    desc: "الجمعة 06 نونبر 2026"
+    desc: "الجمعة 06 نونبر 2026 (الجمعة القادمة)"
   },
   {
     id: "independence",
@@ -242,12 +256,12 @@ const MOROCCAN_HOLIDAYS_2026_2027 = [
     category: "بينية",
     catEn: "Periodic",
     badgeClass: "badge-cat-periodic",
-    startDate: "2027-05-02",
-    endDate: "2027-05-09",
+    startDate: "2027-05-09",
+    endDate: "2027-05-16",
     days: 8,
     icon: "☀️",
     color: "#06B6D4",
-    desc: "من الأحد 02 ماي إلى الأحد 09 ماي 2027"
+    desc: "من الأحد 09 ماي إلى الأحد 16 ماي 2027"
   },
   {
     id: "eid_adha",
@@ -311,6 +325,16 @@ function formatDateIso(date) {
   return `${y}-${m}-${d}`;
 }
 
+// GET DATE FOR A GIVEN DAY OF CURRENT WEEK
+function getDateForDay(targetDayNum) {
+  const now = new Date();
+  const currentDay = now.getDay();
+  const diff = targetDayNum - currentDay;
+  const target = new Date(now);
+  target.setDate(now.getDate() + diff);
+  return target;
+}
+
 // CHECK IF A DATE FALLS INTO A MOROCCAN HOLIDAY
 function getActiveHoliday(date = new Date()) {
   if (simulatedHolidayId) {
@@ -323,10 +347,16 @@ function getActiveHoliday(date = new Date()) {
   }) || null;
 }
 
+// GET NEXT UPCOMING HOLIDAY AFTER CURRENT DATE
+function getNextUpcomingHoliday(date = new Date()) {
+  const dateStr = formatDateIso(date);
+  return MOROCCAN_HOLIDAYS_2026_2027.find(h => h.startDate > dateStr) || null;
+}
+
 // GET HOLIDAY STATUS RELATIVE TO TODAY
 function getHolidayStatus(holiday, todayIso) {
   if (todayIso >= holiday.startDate && todayIso <= holiday.endDate) {
-    return { type: "active", label: "🔴 جارٍ الآن (Active)", badgeClass: "badge-status-active" };
+    return { type: "active", label: "🔴 جارٍ اليوم (Active)", badgeClass: "badge-status-active" };
   } else if (todayIso < holiday.startDate) {
     const d1 = new Date(todayIso + "T00:00:00");
     const d2 = new Date(holiday.startDate + "T00:00:00");
@@ -364,12 +394,22 @@ function updateLiveStatus() {
     heroTag.className = "hero-tag tag-holiday";
     heroTag.textContent = "🏖️ OFFICIAL HOLIDAY • عطلة رسمية";
     heroTitle.textContent = `${activeHoliday.icon} ${activeHoliday.arabic}`;
-    heroSub.textContent = `Void Day • لا توجد دراسة (${activeHoliday.title} • ${activeHoliday.days} ${activeHoliday.days > 1 ? 'Days' : 'Day'})`;
+
+    const nextH = getNextUpcomingHoliday(now);
+    let nextNote = "";
+    if (nextH) {
+      const d1 = new Date(formatDateIso(now) + "T00:00:00");
+      const d2 = new Date(nextH.startDate + "T00:00:00");
+      const diffDays = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
+      nextNote = ` • القادمة: ${nextH.arabic} (بعد ${diffDays} أيام)`;
+    }
+
+    heroSub.textContent = `Void Day • لا توجد دراسة اليوم (${activeHoliday.title})${nextNote}`;
     heroProgressBg.style.display = "none";
     return;
   }
 
-  // Remove holiday glow if not in holiday
+  // Remove holiday glow if not holiday
   heroCard.classList.remove("holiday-glow");
 
   // 2. Sunday or weekend rest
@@ -475,6 +515,20 @@ function updateLiveStatus() {
 
 // RENDER VOID HOLIDAY CARD
 function renderVoidHolidayCard(holiday, isSimulated = false) {
+  const nextH = getNextUpcomingHoliday(new Date());
+  let nextHolidayHtml = "";
+  if (nextH) {
+    const d1 = new Date(formatDateIso(new Date()) + "T00:00:00");
+    const d2 = new Date(nextH.startDate + "T00:00:00");
+    const diffDays = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
+    nextHolidayHtml = `
+      <div style="background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 12px 14px; width: 100%; display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; box-sizing: border-box;">
+        <span style="color: #60A5FA; font-weight: 800;">🔔 العطلة القادمة:</span>
+        <span style="color: #F3F4F6; font-weight: 700;">${nextH.icon} ${nextH.arabic} (${nextH.desc}) • بعد ${diffDays} أيام</span>
+      </div>
+    `;
+  }
+
   return `
     <div class="void-banner-card">
       <div class="void-icon">${holiday.icon}</div>
@@ -500,6 +554,8 @@ function renderVoidHolidayCard(holiday, isSimulated = false) {
           <div class="void-grid-value">${holiday.desc}</div>
         </div>
       </div>
+
+      ${nextHolidayHtml}
 
       <div class="void-quote">
         💡 <b>استراحة محارب 2BAC:</b> استغل يوم العطلة للاستراحة واسترجاع النشاط أو مراجعة ما فاتك بدون ضغط الحصص اليومية! ☕📚
@@ -530,15 +586,15 @@ function renderDay(dayNum) {
   const isActualToday = (dayNum === todayNum);
   const curMins = getCurrentMinutes();
 
-  // Check if viewing Today and today is a holiday (or simulated preview)
-  if (isActualToday || simulatedHolidayId) {
-    const activeHoliday = getActiveHoliday(new Date());
-    if (activeHoliday) {
-      document.getElementById("sectionTitle").textContent = "Void Day • عطلة رسمية 🏖️";
-      document.getElementById("sectionStats").textContent = `${activeHoliday.days} ${activeHoliday.days > 1 ? 'Days' : 'Day'} Off • ${activeHoliday.category}`;
-      scheduleList.innerHTML = renderVoidHolidayCard(activeHoliday, !!simulatedHolidayId);
-      return;
-    }
+  // Check if target day is a holiday
+  const targetDate = isActualToday ? new Date() : getDateForDay(dayNum);
+  const dayHoliday = simulatedHolidayId ? getActiveHoliday() : getActiveHoliday(targetDate);
+
+  if (dayHoliday) {
+    document.getElementById("sectionTitle").textContent = `${dayHoliday.arabic} • Void Day 🏖️`;
+    document.getElementById("sectionStats").textContent = `${dayHoliday.days} ${dayHoliday.days > 1 ? 'Days' : 'Day'} Off • ${dayHoliday.category}`;
+    scheduleList.innerHTML = renderVoidHolidayCard(dayHoliday, !!simulatedHolidayId);
+    return;
   }
 
   // Sunday
@@ -685,7 +741,7 @@ function renderHolidaysView() {
   sectionHeader.style.display = "flex";
 
   document.getElementById("sectionTitle").textContent = "Moroccan School Holidays • العطل المدرسية";
-  document.getElementById("sectionStats").textContent = "15 Holidays • 57 Total Days Off (2026/2027)";
+  document.getElementById("sectionStats").textContent = "16 Holidays • 58 Total Days Off (2026/2027)";
 
   const todayIso = formatDateIso(new Date());
 
@@ -695,7 +751,7 @@ function renderHolidaysView() {
   let html = `
     <div class="holidays-stats-bar">
       <div>
-        <div class="holidays-stat-num">15</div>
+        <div class="holidays-stat-num">16</div>
         <div class="holidays-stat-lbl">عطلة رسمية</div>
       </div>
       <div>
