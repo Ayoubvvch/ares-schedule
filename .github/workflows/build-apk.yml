@@ -28,37 +28,30 @@ jobs:
         with:
           gradle-version: '8.5'
 
-      - name: Generate Release Keystore
-        run: |
-          keytool -genkeypair -v -keystore release.jks -keyalg RSA -keysize 2048 -validity 10000 \
-            -alias ares -keypass android -storepass android \
-            -dname "CN=Ares, OU=Ares, O=Ares, L=Tetouan, ST=Tetouan, C=MA"
-
       - name: Build Release APK
         run: gradle assembleRelease
 
       - name: Prepare APK Asset
         run: |
-          cp app/build/outputs/apk/release/app-release.apk Ares-Schedule-v1.0.3.apk
-          ls -lh Ares-Schedule-v1.0.3.apk
+          cp app/build/outputs/apk/release/app-release.apk Ares-Schedule-v1.0.4.apk
+          ls -lh Ares-Schedule-v1.0.4.apk
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.3
-          name: "Ares Schedule v1.0.3 🏖️ (National Unity Day & Next Friday Holiday Detection)"
+          tag_name: v1.0.4
+          name: "Ares Schedule v1.0.4 🔑 (Permanent Signing Key & Seamless Updates)"
           body: |
-            ## 🏖️ Ares Schedule v1.0.3 (National Unity Day & Holiday Intelligence)
+            ## 🔑 Ares Schedule v1.0.4 (Permanent Keystore Edition)
             
-            ### ✨ What's Fixed & Added in v1.0.3:
-            - 🇲🇦 **Today is a Holiday (National Unity Day - 31 Oct):** Added the official National Unity Day (`عيد الوحدة الوطني - السبت 31 أكتوبر 2026`) into the Moroccan holiday calendar. Today is now detected immediately on startup as a full **Void Day**!
-            - 🔔 **Next Friday Holiday Detection:** Intelligent notification alerts that next Friday (06 Nov) is an official holiday (`ذكرى المسيرة الخضراء`).
-            - 📅 **Complete 16 Holidays (58 Total Days Off):** Comprehensive 2026/2027 Moroccan official school and national calendar.
-            - 🏖️ **Dynamic Day Tab Detection:** Clicking any day tab (e.g. today or Saturday) checks against the calendar and displays Void Day when applicable.
+            ### ✨ What's Fixed in v1.0.4:
+            - 🔐 **Permanent Release Keystore Signing:** Replaced ephemeral CI-generated keystore with a permanent, committed release keystore (`keystore/release.jks`).
+            - 🔄 **Seamless In-Place Updates:** Eliminates `INSTALL_FAILED_UPDATE_INCOMPATIBLE` signature mismatch errors. From this version forward, you will never need to uninstall the app to install new updates!
+            - 🇲🇦 **All 16 Moroccan Holidays Integrated:** Includes today's National Unity Day Void mode and next Friday's Green March countdown.
             
             ### 📥 Download & Install
-            Download and install `Ares-Schedule-v1.0.3.apk` below directly on your Android phone.
+            **Important:** Because previous builds (v1.0.0-v1.0.3) used ephemeral CI keys, please uninstall the older version one last time, and install `Ares-Schedule-v1.0.4.apk`. From now on, all upcoming updates will install directly over it with zero friction!
           files: |
-            Ares-Schedule-v1.0.3.apk
+            Ares-Schedule-v1.0.4.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

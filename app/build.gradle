@@ -11,18 +11,18 @@ android {
         applicationId "com.ares.schedule"
         minSdk 24
         targetSdk 34
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 5
+        versionName "1.0.4"
     }
 
     signingConfigs {
         release {
-            if (file('../release.jks').exists()) {
-                storeFile file('../release.jks')
-                storePassword 'android'
-                keyAlias 'ares'
-                keyPassword 'android'
-            }
+            storeFile file('../keystore/release.jks')
+            storePassword 'ares2bac2026'
+            keyAlias 'ares'
+            keyPassword 'ares2bac2026'
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
     }
 
