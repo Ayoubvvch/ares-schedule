@@ -91,10 +91,16 @@
       position: relative;
       overflow: hidden;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+      transition: all 0.3s ease;
     }
     .hero-card.live-glow {
       border-color: #3B82F6;
       box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
+    }
+    .hero-card.holiday-glow {
+      border-color: #10B981 !important;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.3) !important;
+      background: linear-gradient(145deg, #071F16 0%, #050A08 100%) !important;
     }
     .hero-top {
       display: flex;
@@ -119,6 +125,18 @@
       width: 8px;
       height: 8px;
       background: #EF4444;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 1.5s infinite;
+    }
+    .hero-tag.tag-holiday {
+      color: #34D399;
+    }
+    .hero-tag.tag-holiday::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: #34D399;
       border-radius: 50%;
       display: inline-block;
       animation: pulse 1.5s infinite;
@@ -196,6 +214,12 @@
       color: #60A5FA;
       border-color: #3B82F6;
       box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+    }
+    .tab-pill.holiday-tab.active {
+      background: #0E291E;
+      color: #34D399;
+      border-color: #10B981;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
     }
     .tab-pill .dot {
       width: 6px;
@@ -347,6 +371,105 @@
       font-weight: 800;
     }
 
+    /* VOID DAY CARD (HOLIDAY FULL HERO) */
+    .void-banner-card {
+      background: linear-gradient(145deg, #091C14 0%, #05080A 100%);
+      border: 1px solid #10B981;
+      border-radius: 18px;
+      padding: 26px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 35px rgba(16, 185, 129, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .void-banner-card .void-icon {
+      font-size: 48px;
+      margin-bottom: 2px;
+      filter: drop-shadow(0 0 16px rgba(16, 185, 129, 0.45));
+      animation: pulse 2.5s infinite;
+    }
+    .void-pill {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34D399;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .void-title {
+      font-size: 23px;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1.25;
+    }
+    .void-sub {
+      font-size: 14.5px;
+      color: #A7F3D0;
+      font-weight: 600;
+    }
+    .void-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+    .void-grid-box {
+      background: #0B0F17;
+      border: 1px solid #1A2232;
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .void-grid-label {
+      font-size: 10.5px;
+      color: #6B7280;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .void-grid-value {
+      font-size: 13px;
+      color: #E5E7EB;
+      font-weight: 800;
+      margin-top: 3px;
+    }
+    .void-quote {
+      background: #0A0D14;
+      border: 1px dashed #1E293B;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 12.5px;
+      color: #94A3B8;
+      line-height: 1.5;
+      width: 100%;
+    }
+    .void-btn-reset {
+      background: #1F2937;
+      border: 1px solid #374151;
+      color: #F3F4F6;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: background 0.2s;
+    }
+    .void-btn-reset:active {
+      background: #374151;
+    }
+
     /* ALL WEEK OVERVIEW CONTAINER */
     .all-week-view {
       display: none;
@@ -388,6 +511,162 @@
       border-bottom: none;
     }
 
+    /* HOLIDAYS CALENDAR VIEW */
+    .holidays-view {
+      display: none;
+      padding: 0 20px;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .holidays-stats-bar {
+      background: #0A0D14;
+      border: 1px solid #1E293B;
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .holidays-stat-num {
+      font-size: 16px;
+      font-weight: 900;
+      color: #60A5FA;
+    }
+    .holidays-stat-lbl {
+      font-size: 10.5px;
+      color: var(--text-dim);
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .holiday-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-left: 5px solid #10B981;
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .holiday-card.is-active-holiday {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, #0A0C12 70%);
+      border-color: #10B981;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
+    }
+    .holiday-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .holiday-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .holiday-card-arabic {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .holiday-dates-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-dim);
+      border-top: 1px solid #141722;
+      padding-top: 8px;
+      margin-top: 2px;
+    }
+    .holiday-action-btn {
+      background: #111827;
+      border: 1px solid #1F2937;
+      color: #60A5FA;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      align-self: flex-start;
+      margin-top: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.15s;
+    }
+    .holiday-action-btn:active {
+      background: #1E293B;
+    }
+
+    /* Category Badges */
+    .badge-cat {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .badge-cat-periodic {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60A5FA;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+    .badge-cat-national {
+      background: rgba(239, 68, 68, 0.15);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .badge-cat-religious {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .badge-cat-semester {
+      background: rgba(236, 72, 153, 0.15);
+      color: #F472B6;
+      border: 1px solid rgba(236, 72, 153, 0.3);
+    }
+    .badge-cat-civil {
+      background: rgba(139, 92, 246, 0.15);
+      color: #A78BFA;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    /* Status Badges */
+    .badge-status-active {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+    .badge-status-upcoming {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60A5FA;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+    .badge-status-past {
+      background: #141722;
+      color: #6B7280;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
     /* FOOTER INFO */
     .footer-bar {
       margin-top: 24px;
@@ -401,7 +680,7 @@
 
     @keyframes pulse {
       0% { transform: scale(0.95); opacity: 0.8; }
-      50% { transform: scale(1.2); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 1; }
       100% { transform: scale(0.95); opacity: 0.8; }
     }
   </style>
@@ -440,6 +719,7 @@
     <button class="tab-pill" data-day="5">Fri</button>
     <button class="tab-pill" data-day="6">Sat</button>
     <button class="tab-pill" data-day="week">📅 All Week</button>
+    <button class="tab-pill holiday-tab" data-day="holidays">🏖️ Holidays</button>
   </nav>
 
   <!-- SECTION HEADER -->
@@ -448,13 +728,18 @@
     <span class="section-stats" id="sectionStats">4 Classes • 4 Hours</span>
   </div>
 
-  <!-- SINGLE DAY SCHEDULE LIST -->
+  <!-- SINGLE DAY SCHEDULE LIST (OR VOID HOLIDAY CARD) -->
   <main class="schedule-list" id="scheduleList">
     <!-- Populated dynamically via JS -->
   </main>
 
   <!-- ALL WEEK OVERVIEW (Toggled) -->
   <section class="all-week-view" id="allWeekView">
+    <!-- Populated dynamically via JS -->
+  </section>
+
+  <!-- HOLIDAYS OVERVIEW (Toggled) -->
+  <section class="holidays-view" id="holidaysView">
     <!-- Populated dynamically via JS -->
   </section>
 

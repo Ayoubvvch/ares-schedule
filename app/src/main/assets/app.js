@@ -1,4 +1,5 @@
-// Ares Schedule • 2BAC SP-4 Data & Logic
+// Ares Schedule • 2BAC SP-4 Data & Logic (OLED Holiday Edition)
+
 const SCHEDULE = {
   1: {
     name: "Monday",
@@ -64,7 +65,222 @@ const SCHEDULE = {
   }
 };
 
-let currentView = "today"; // 'today', 1..6, 'week'
+// MOROCCAN OFFICIAL SCHOOL HOLIDAYS 2026/2027
+const MOROCCAN_HOLIDAYS_2026_2027 = [
+  {
+    id: "mawlid",
+    title: "Mawlid Annabawi",
+    arabic: "عيد المولد النبوي الشريف",
+    category: "دينية",
+    catEn: "Religious",
+    badgeClass: "badge-cat-religious",
+    startDate: "2026-09-24",
+    endDate: "2026-09-25",
+    days: 2,
+    icon: "🕌",
+    color: "#10B981",
+    desc: "12 و 13 ربيع الأول 1448 هـ"
+  },
+  {
+    id: "break1",
+    title: "1st Mid-term Break",
+    arabic: "العطلة البينية الأولى",
+    category: "بينية",
+    catEn: "Periodic",
+    badgeClass: "badge-cat-periodic",
+    startDate: "2026-10-18",
+    endDate: "2026-10-25",
+    days: 8,
+    icon: "🌴",
+    color: "#3B82F6",
+    desc: "من الأحد 18 أكتوبر إلى الأحد 25 أكتوبر 2026"
+  },
+  {
+    id: "green_march",
+    title: "Green March Anniversary",
+    arabic: "ذكرى المسيرة الخضراء",
+    category: "وطنية",
+    catEn: "National",
+    badgeClass: "badge-cat-national",
+    startDate: "2026-11-06",
+    endDate: "2026-11-06",
+    days: 1,
+    icon: "🇲🇦",
+    color: "#EF4444",
+    desc: "الجمعة 06 نونبر 2026"
+  },
+  {
+    id: "independence",
+    title: "Independence Day",
+    arabic: "عيد الاستقلال المجيد",
+    category: "وطنية",
+    catEn: "National",
+    badgeClass: "badge-cat-national",
+    startDate: "2026-11-18",
+    endDate: "2026-11-18",
+    days: 1,
+    icon: "🇲🇦",
+    color: "#EF4444",
+    desc: "الأربعاء 18 نونبر 2026"
+  },
+  {
+    id: "break2",
+    title: "2nd Mid-term Break",
+    arabic: "العطلة البينية الثانية",
+    category: "بينية",
+    catEn: "Periodic",
+    badgeClass: "badge-cat-periodic",
+    startDate: "2026-12-06",
+    endDate: "2026-12-13",
+    days: 8,
+    icon: "❄️",
+    color: "#06B6D4",
+    desc: "من الأحد 06 دجنبر إلى الأحد 13 دجنبر 2026"
+  },
+  {
+    id: "new_year",
+    title: "New Year's Day",
+    arabic: "فاتح السنة الميلادية",
+    category: "عالمية",
+    catEn: "Civil",
+    badgeClass: "badge-cat-civil",
+    startDate: "2027-01-01",
+    endDate: "2027-01-01",
+    days: 1,
+    icon: "🎆",
+    color: "#8B5CF6",
+    desc: "الجمعة 01 يناير 2027"
+  },
+  {
+    id: "independence_manifesto",
+    title: "Proclamation of Independence",
+    arabic: "ذكرى تقديم وثيقة الاستقلال",
+    category: "وطنية",
+    catEn: "National",
+    badgeClass: "badge-cat-national",
+    startDate: "2027-01-11",
+    endDate: "2027-01-11",
+    days: 1,
+    icon: "📜",
+    color: "#F59E0B",
+    desc: "الإثنين 11 يناير 2027"
+  },
+  {
+    id: "yennayer",
+    title: "Amazigh New Year (Yennayer)",
+    arabic: "رأس السنة الأمازيغية (إيض يناير)",
+    category: "وطنية",
+    catEn: "National",
+    badgeClass: "badge-cat-national",
+    startDate: "2027-01-14",
+    endDate: "2027-01-14",
+    days: 1,
+    icon: "ⵣ",
+    color: "#EAB308",
+    desc: "الخميس 14 يناير 2027"
+  },
+  {
+    id: "mid_term",
+    title: "Mid-Academic Year Vacation",
+    arabic: "عطلة منتصف السنة الدراسية",
+    category: "مدرسية",
+    catEn: "Semester",
+    badgeClass: "badge-cat-semester",
+    startDate: "2027-01-24",
+    endDate: "2027-01-31",
+    days: 8,
+    icon: "🏖️",
+    color: "#EC4899",
+    desc: "من الأحد 24 يناير إلى الأحد 31 يناير 2027"
+  },
+  {
+    id: "eid_fitr",
+    title: "Eid Al-Fitr",
+    arabic: "عيد الفطر المبارك",
+    category: "دينية",
+    catEn: "Religious",
+    badgeClass: "badge-cat-religious",
+    startDate: "2027-03-09",
+    endDate: "2027-03-12",
+    days: 4,
+    icon: "🌙",
+    color: "#10B981",
+    desc: "من 29 رمضان إلى 2 شوال 1448 هـ"
+  },
+  {
+    id: "break3",
+    title: "3rd Mid-term Break",
+    arabic: "العطلة البينية الثالثة",
+    category: "بينية",
+    catEn: "Periodic",
+    badgeClass: "badge-cat-periodic",
+    startDate: "2027-03-21",
+    endDate: "2027-03-28",
+    days: 8,
+    icon: "🌸",
+    color: "#10B981",
+    desc: "من الأحد 21 مارس إلى الأحد 28 مارس 2027"
+  },
+  {
+    id: "labor_day",
+    title: "Labour Day",
+    arabic: "عيد الشغل",
+    category: "عالمية",
+    catEn: "Civil",
+    badgeClass: "badge-cat-civil",
+    startDate: "2027-05-01",
+    endDate: "2027-05-01",
+    days: 1,
+    icon: "🛠️",
+    color: "#F97316",
+    desc: "السبت 01 ماي 2027"
+  },
+  {
+    id: "break4",
+    title: "4th Mid-term Break",
+    arabic: "العطلة البينية الرابعة",
+    category: "بينية",
+    catEn: "Periodic",
+    badgeClass: "badge-cat-periodic",
+    startDate: "2027-05-02",
+    endDate: "2027-05-09",
+    days: 8,
+    icon: "☀️",
+    color: "#06B6D4",
+    desc: "من الأحد 02 ماي إلى الأحد 09 ماي 2027"
+  },
+  {
+    id: "eid_adha",
+    title: "Eid Al-Adha",
+    arabic: "عيد الأضحى المبارك",
+    category: "دينية",
+    catEn: "Religious",
+    badgeClass: "badge-cat-religious",
+    startDate: "2027-05-16",
+    endDate: "2027-05-19",
+    days: 4,
+    icon: "🐑",
+    color: "#10B981",
+    desc: "من 09 إلى 11 ذو الحجة 1448 هـ"
+  },
+  {
+    id: "hijri_new_year",
+    title: "Hijri New Year 1449",
+    arabic: "فاتح محرم (رأس السنة الهجرية)",
+    category: "دينية",
+    catEn: "Religious",
+    badgeClass: "badge-cat-religious",
+    startDate: "2027-06-06",
+    endDate: "2027-06-06",
+    days: 1,
+    icon: "✨",
+    color: "#8B5CF6",
+    desc: "فاتح محرم 1449 هـ"
+  }
+];
+
+let currentView = "today"; // 'today', 1..6, 'week', 'holidays'
+let simulatedHolidayId = null; // For interactive testing & previewing Void Mode
 
 function timeToMinutes(timeStr) {
   const [h, m] = timeStr.split(":").map(Number);
@@ -88,7 +304,44 @@ function getCurrentMinutes() {
   return d.getHours() * 60 + d.getMinutes();
 }
 
-// UPDATE LIVE STATUS
+function formatDateIso(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+// CHECK IF A DATE FALLS INTO A MOROCCAN HOLIDAY
+function getActiveHoliday(date = new Date()) {
+  if (simulatedHolidayId) {
+    const found = MOROCCAN_HOLIDAYS_2026_2027.find(h => h.id === simulatedHolidayId);
+    if (found) return found;
+  }
+  const dateStr = formatDateIso(date);
+  return MOROCCAN_HOLIDAYS_2026_2027.find(h => {
+    return dateStr >= h.startDate && dateStr <= h.endDate;
+  }) || null;
+}
+
+// GET HOLIDAY STATUS RELATIVE TO TODAY
+function getHolidayStatus(holiday, todayIso) {
+  if (todayIso >= holiday.startDate && todayIso <= holiday.endDate) {
+    return { type: "active", label: "🔴 جارٍ الآن (Active)", badgeClass: "badge-status-active" };
+  } else if (todayIso < holiday.startDate) {
+    const d1 = new Date(todayIso + "T00:00:00");
+    const d2 = new Date(holiday.startDate + "T00:00:00");
+    const diffDays = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
+    return {
+      type: "upcoming",
+      label: `⏳ بعد ${diffDays} يوم${diffDays > 1 ? '' : ''}`,
+      badgeClass: "badge-status-upcoming"
+    };
+  } else {
+    return { type: "past", label: "✓ انقضت (Past)", badgeClass: "badge-status-past" };
+  }
+}
+
+// UPDATE LIVE STATUS HERO
 function updateLiveStatus() {
   const now = new Date();
   const day = now.getDay();
@@ -103,7 +356,23 @@ function updateLiveStatus() {
   const heroProgressBg = document.getElementById("heroProgressBg");
   const heroProgressBar = document.getElementById("heroProgressBar");
 
-  // Sunday or outside school days
+  // 1. Check if today is a Moroccan Holiday (or simulated preview)
+  const activeHoliday = getActiveHoliday(now);
+  if (activeHoliday) {
+    heroCard.classList.remove("live-glow");
+    heroCard.classList.add("holiday-glow");
+    heroTag.className = "hero-tag tag-holiday";
+    heroTag.textContent = "🏖️ OFFICIAL HOLIDAY • عطلة رسمية";
+    heroTitle.textContent = `${activeHoliday.icon} ${activeHoliday.arabic}`;
+    heroSub.textContent = `Void Day • لا توجد دراسة (${activeHoliday.title} • ${activeHoliday.days} ${activeHoliday.days > 1 ? 'Days' : 'Day'})`;
+    heroProgressBg.style.display = "none";
+    return;
+  }
+
+  // Remove holiday glow if not in holiday
+  heroCard.classList.remove("holiday-glow");
+
+  // 2. Sunday or weekend rest
   if (day === 0) {
     heroTag.className = "hero-tag tag-free";
     heroTag.textContent = "✨ WEEKEND REST";
@@ -128,7 +397,7 @@ function updateLiveStatus() {
     return;
   }
 
-  // 1. Check if class is ongoing right now
+  // 3. Ongoing Class
   let activeClass = null;
   for (const c of classes) {
     const startM = timeToMinutes(c.start);
@@ -147,7 +416,7 @@ function updateLiveStatus() {
     
     const remMins = activeClass.endM - curMins;
     heroSub.textContent = `${activeClass.start} – ${activeClass.end} • ${remMins} min${remMins > 1 ? 's' : ''} left (${activeClass.arabic})`;
-
+    
     const elapsed = curMins - activeClass.startM;
     const total = activeClass.endM - activeClass.startM;
     const pct = Math.min(Math.max((elapsed / total) * 100, 0), 100);
@@ -157,7 +426,7 @@ function updateLiveStatus() {
     return;
   }
 
-  // 2. Check if before school starts today
+  // 4. Upcoming First Class
   const firstClass = classes[0];
   const firstStartM = timeToMinutes(firstClass.start);
   if (curMins < firstStartM) {
@@ -171,7 +440,7 @@ function updateLiveStatus() {
     return;
   }
 
-  // 3. Check for next class today
+  // 5. Next Class Today
   let nextClass = null;
   for (const c of classes) {
     const startM = timeToMinutes(c.start);
@@ -192,7 +461,7 @@ function updateLiveStatus() {
     return;
   }
 
-  // 4. All classes done for today
+  // 6. All classes done for today
   heroCard.classList.remove("live-glow");
   heroTag.className = "hero-tag tag-free";
   heroTag.textContent = "✅ COMPLETED FOR TODAY";
@@ -204,22 +473,76 @@ function updateLiveStatus() {
   heroProgressBg.style.display = "none";
 }
 
+// RENDER VOID HOLIDAY CARD
+function renderVoidHolidayCard(holiday, isSimulated = false) {
+  return `
+    <div class="void-banner-card">
+      <div class="void-icon">${holiday.icon}</div>
+      <div class="void-pill">🏖️ عطلة رسمية • VOID DAY</div>
+      <div class="void-title">${holiday.arabic}</div>
+      <div class="void-sub">${holiday.title} • يوم شاغر بالكامل</div>
+      
+      <div class="void-grid">
+        <div class="void-grid-box">
+          <div class="void-grid-label">📅 الفترة (Dates)</div>
+          <div class="void-grid-value">${holiday.startDate} ➔ ${holiday.endDate}</div>
+        </div>
+        <div class="void-grid-box">
+          <div class="void-grid-label">⏳ المدة (Duration)</div>
+          <div class="void-grid-value">${holiday.days} ${holiday.days > 1 ? 'أيام' : 'يوم'} (${holiday.category})</div>
+        </div>
+        <div class="void-grid-box">
+          <div class="void-grid-label">⚡ الحالة (Status)</div>
+          <div class="void-grid-value" style="color: #34D399;">شاغر • 0 حصص مبرمجة</div>
+        </div>
+        <div class="void-grid-box">
+          <div class="void-grid-label">📖 المناسبة (Occasion)</div>
+          <div class="void-grid-value">${holiday.desc}</div>
+        </div>
+      </div>
+
+      <div class="void-quote">
+        💡 <b>استراحة محارب 2BAC:</b> استغل يوم العطلة للاستراحة واسترجاع النشاط أو مراجعة ما فاتك بدون ضغط الحصص اليومية! ☕📚
+      </div>
+
+      ${isSimulated ? `
+        <button class="void-btn-reset" onclick="clearSimulatedHoliday()">
+          ✕ إلغاء وضع المعاينة والرجوع للجدول المباشر
+        </button>
+      ` : ''}
+    </div>
+  `;
+}
+
 // RENDER SINGLE DAY
 function renderDay(dayNum) {
   const scheduleList = document.getElementById("scheduleList");
   const allWeekView = document.getElementById("allWeekView");
+  const holidaysView = document.getElementById("holidaysView");
   const sectionHeader = document.getElementById("sectionHeader");
 
   scheduleList.style.display = "flex";
   allWeekView.style.display = "none";
+  holidaysView.style.display = "none";
   sectionHeader.style.display = "flex";
 
   const todayNum = getDayOfWeek();
   const isActualToday = (dayNum === todayNum);
   const curMins = getCurrentMinutes();
 
+  // Check if viewing Today and today is a holiday (or simulated preview)
+  if (isActualToday || simulatedHolidayId) {
+    const activeHoliday = getActiveHoliday(new Date());
+    if (activeHoliday) {
+      document.getElementById("sectionTitle").textContent = "Void Day • عطلة رسمية 🏖️";
+      document.getElementById("sectionStats").textContent = `${activeHoliday.days} ${activeHoliday.days > 1 ? 'Days' : 'Day'} Off • ${activeHoliday.category}`;
+      scheduleList.innerHTML = renderVoidHolidayCard(activeHoliday, !!simulatedHolidayId);
+      return;
+    }
+  }
+
+  // Sunday
   if (dayNum === 0 || !SCHEDULE[dayNum]) {
-    // Sunday
     document.getElementById("sectionTitle").textContent = "Sunday • الأحد";
     document.getElementById("sectionStats").textContent = "Weekend Holiday";
     scheduleList.innerHTML = `
@@ -263,7 +586,7 @@ function renderDay(dayNum) {
       let cardClass = "";
       let statusBadge = "";
 
-      if (isActualToday) {
+      if (isActualToday && !simulatedHolidayId) {
         if (curMins >= startM && curMins < endM) {
           cardClass = "is-current";
           statusBadge = `<span class="class-status-badge badge-ongoing">Live Now</span>`;
@@ -300,9 +623,11 @@ function renderDay(dayNum) {
 function renderAllWeek() {
   const scheduleList = document.getElementById("scheduleList");
   const allWeekView = document.getElementById("allWeekView");
+  const holidaysView = document.getElementById("holidaysView");
   const sectionHeader = document.getElementById("sectionHeader");
 
   scheduleList.style.display = "none";
+  holidaysView.style.display = "none";
   allWeekView.style.display = "flex";
   sectionHeader.style.display = "flex";
 
@@ -347,6 +672,97 @@ function renderAllWeek() {
   allWeekView.innerHTML = html;
 }
 
+// RENDER HOLIDAYS VIEW
+function renderHolidaysView() {
+  const scheduleList = document.getElementById("scheduleList");
+  const allWeekView = document.getElementById("allWeekView");
+  const holidaysView = document.getElementById("holidaysView");
+  const sectionHeader = document.getElementById("sectionHeader");
+
+  scheduleList.style.display = "none";
+  allWeekView.style.display = "none";
+  holidaysView.style.display = "flex";
+  sectionHeader.style.display = "flex";
+
+  document.getElementById("sectionTitle").textContent = "Moroccan School Holidays • العطل المدرسية";
+  document.getElementById("sectionStats").textContent = "15 Holidays • 57 Total Days Off (2026/2027)";
+
+  const todayIso = formatDateIso(new Date());
+
+  let totalDays = 0;
+  MOROCCAN_HOLIDAYS_2026_2027.forEach(h => totalDays += h.days);
+
+  let html = `
+    <div class="holidays-stats-bar">
+      <div>
+        <div class="holidays-stat-num">15</div>
+        <div class="holidays-stat-lbl">عطلة رسمية</div>
+      </div>
+      <div>
+        <div class="holidays-stat-num">${totalDays}</div>
+        <div class="holidays-stat-lbl">يوماً شاغراً</div>
+      </div>
+      <div>
+        <div class="holidays-stat-num">4</div>
+        <div class="holidays-stat-lbl">عطل بينية</div>
+      </div>
+      <div>
+        <div class="holidays-stat-num">2026/27</div>
+        <div class="holidays-stat-lbl">الموسم الدراسي</div>
+      </div>
+    </div>
+  `;
+
+  MOROCCAN_HOLIDAYS_2026_2027.forEach(h => {
+    const status = getHolidayStatus(h, todayIso);
+    const isActive = (status.type === "active");
+
+    html += `
+      <div class="holiday-card ${isActive ? 'is-active-holiday' : ''}" style="border-left-color: ${h.color};">
+        <div class="holiday-card-top">
+          <div class="holiday-card-title">
+            <span>${h.icon}</span>
+            <span>${h.title}</span>
+          </div>
+          <span class="badge-cat ${h.badgeClass}">${h.category}</span>
+        </div>
+        <div class="holiday-card-arabic">${h.arabic} • <span style="color: var(--text-dim);">${h.desc}</span></div>
+        <div class="holiday-dates-row">
+          <span>📅 ${h.startDate} ➔ ${h.endDate} (${h.days} ${h.days > 1 ? 'أيام' : 'يوم'})</span>
+          <span class="${status.badgeClass}">${status.label}</span>
+        </div>
+        <div>
+          <button class="holiday-action-btn" onclick="previewHolidayVoid('${h.id}')">
+            <span>👁️</span>
+            <span>معاينة شاشة Void</span>
+          </button>
+        </div>
+      </div>
+    `;
+  });
+
+  holidaysView.innerHTML = html;
+}
+
+// PREVIEW & RESET ACTIONS
+window.previewHolidayVoid = function(holidayId) {
+  simulatedHolidayId = holidayId;
+  const tabs = document.querySelectorAll(".tab-pill");
+  tabs.forEach(t => t.classList.remove("active"));
+  const todayTab = document.querySelector('.tab-pill[data-day="today"]');
+  if (todayTab) todayTab.classList.add("active");
+
+  currentView = "today";
+  updateLiveStatus();
+  renderDay(getDayOfWeek());
+};
+
+window.clearSimulatedHoliday = function() {
+  simulatedHolidayId = null;
+  updateLiveStatus();
+  renderDay(getDayOfWeek());
+};
+
 // SETUP TABS
 function setupTabs() {
   const tabs = document.querySelectorAll(".tab-pill");
@@ -363,6 +779,8 @@ function setupTabs() {
         renderDay(today);
       } else if (target === "week") {
         renderAllWeek();
+      } else if (target === "holidays") {
+        renderHolidaysView();
       } else {
         renderDay(Number(target));
       }
@@ -373,7 +791,7 @@ function setupTabs() {
 // INITIALIZE
 document.addEventListener("DOMContentLoaded", () => {
   const now = new Date();
-  const options = { weekday: 'long', month: 'short', day: 'numeric' };
+  const options = { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' };
   document.getElementById("headerDate").textContent = now.toLocaleDateString('en-US', options);
 
   setupTabs();
