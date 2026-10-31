@@ -39,29 +39,26 @@ jobs:
 
       - name: Prepare APK Asset
         run: |
-          cp app/build/outputs/apk/release/app-release.apk Ares-Schedule-v1.0.0.apk
-          ls -lh Ares-Schedule-v1.0.0.apk
+          cp app/build/outputs/apk/release/app-release.apk Ares-Schedule-v1.0.1.apk
+          ls -lh Ares-Schedule-v1.0.1.apk
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.0
-          name: "Ares Schedule v1.0.0 🖤 (OLED Edition)"
+          tag_name: v1.0.1
+          name: "Ares Schedule v1.0.1 🖤 (OLED Edition - Stability Fix)"
           body: |
-            ## 🖤 Ares Schedule v1.0.0 (OLED Black Edition)
+            ## 🖤 Ares Schedule v1.0.1 (OLED Black Edition)
             
-            Ultra-lightweight Android application for **2BAC SP-4 (2026/2027)** school timetable.
+            ### 🛠️ What's Fixed in v1.0.1:
+            - 🛡️ **Fixed Instant Crash on Launch:** Removed fragile WindowInsetsController call during onCreate() that caused crashes on certain Android ROMs.
+            - 🎨 **Universal PNG Adaptive Icons:** Replaced XML VectorDrawable icons with multi-density PNG icons to eliminate PathParser inflation crashes on OEM launchers.
+            - 🌐 **Added Network State & Internet Permissions:** Prevents WebView SecurityException on strict Android builds.
+            - ⚡ **Fail-Safe WebView Initialization:** Protected with try/catch fallback to prevent silent crashes.
             
-            ### ✨ Highlights:
-            - ⚡ **Instant cold start:** Opens in under 100ms.
-            - 🖤 **True OLED Pitch Black UI (`#000000`):** Zero glare, maximum AMOLED battery efficiency.
-            - 🔴 **Dynamic Live Class Tracker:** Real-time countdown for ongoing classes and "Up Next" preview.
-            - 📅 **Interactive Day Tabs:** Quick switcher between Mon–Sat, plus full weekly overview.
-            - 📴 **100% Offline:** Zero network requests, privacy-first, zero battery drain.
-            
-            ### 📥 Installation:
-            Download and install `Ares-Schedule-v1.0.0.apk` below directly on your Android phone.
+            ### 📥 Download & Install
+            Download and install `Ares-Schedule-v1.0.1.apk` below directly on your Android phone.
           files: |
-            Ares-Schedule-v1.0.0.apk
+            Ares-Schedule-v1.0.1.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
