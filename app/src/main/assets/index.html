@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Ares Schedule • 2BAC SP-4</title>
+  <style>
+    :root {
+      --bg: #000000;
+      --card-bg: #0A0C12;
+      --card-surface: #10141F;
+      --border: #1C2230;
+      --border-focus: #3B82F6;
+      --text: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --text-dim: #6B7280;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+      /* Subject Colors */
+      --c-math: #10B981;
+      --c-physics: #F59E0B;
+      --c-svt: #06B6D4;
+      --c-french: #8B5CF6;
+      --c-english: #38BDF8;
+      --c-sport: #6366F1;
+      --c-philo: #EAB308;
+      --c-arabic: #FB923C;
+      --c-islamic: #F43F5E;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      padding-top: calc(var(--safe-top) + 12px);
+      padding-bottom: calc(var(--safe-bottom) + 24px);
+    }
+
+    /* APP HEADER */
+    .app-header {
+      padding: 12px 20px 8px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-info h1 {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .header-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+    .header-badge {
+      background: #0E1524;
+      border: 1px solid #1D4ED8;
+      color: #60A5FA;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 10px;
+      letter-spacing: 1px;
+    }
+
+    /* LIVE STATUS HERO CARD */
+    .hero-card {
+      margin: 12px 20px 16px 20px;
+      background: linear-gradient(145deg, #0D111A 0%, #06070B 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+    }
+    .hero-card.live-glow {
+      border-color: #3B82F6;
+      box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
+    }
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .hero-tag {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hero-tag.tag-live {
+      color: #EF4444;
+    }
+    .hero-tag.tag-live::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: #EF4444;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 1.5s infinite;
+    }
+    .hero-tag.tag-next {
+      color: #F59E0B;
+    }
+    .hero-tag.tag-free {
+      color: #10B981;
+    }
+    .hero-clock {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .hero-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+      line-height: 1.25;
+    }
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: #1A202C;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3B82F6, #60A5FA);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    /* DAY SELECTOR TABS */
+    .tabs-container {
+      display: flex;
+      gap: 8px;
+      padding: 0 20px 14px 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs-container::-webkit-scrollbar {
+      display: none;
+    }
+    .tab-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tab-pill.active {
+      background: #1E293B;
+      color: #60A5FA;
+      border-color: #3B82F6;
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+    }
+    .tab-pill .dot {
+      width: 6px;
+      height: 6px;
+      background: #3B82F6;
+      border-radius: 50%;
+    }
+
+    /* SECTION TITLE */
+    .section-header {
+      padding: 0 20px 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: 0.3px;
+    }
+    .section-stats {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    /* SCHEDULE LIST */
+    .schedule-list {
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* CLASS CARD */
+    .class-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-left: 5px solid #4B5563;
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      transition: transform 0.15s ease, border-color 0.2s ease;
+    }
+    .class-card:active {
+      transform: scale(0.98);
+    }
+    .class-card.is-current {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, #0A0C12 70%);
+      border-color: #3B82F6;
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.2);
+    }
+    .class-card.is-past {
+      opacity: 0.45;
+    }
+    .class-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .class-time {
+      font-size: 12px;
+      font-weight: 700;
+      color: #E2E8F0;
+      background: #141824;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.3px;
+    }
+    .class-status-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .badge-ongoing {
+      background: rgba(239, 68, 68, 0.2);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+    .badge-upcoming {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60A5FA;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+    .badge-done {
+      background: #141722;
+      color: #6B7280;
+    }
+
+    .class-name {
+      font-size: 17px;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .class-arabic {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* BREAK / FREE DIVIDER */
+    .break-item {
+      background: #06070B;
+      border: 1px dashed #1B212E;
+      border-radius: 10px;
+      padding: 10px 14px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .free-day-banner {
+      background: #07090E;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .free-day-banner .emoji {
+      font-size: 38px;
+    }
+    .free-day-banner h3 {
+      font-size: 18px;
+      color: #FFFFFF;
+      font-weight: 800;
+    }
+
+    /* ALL WEEK OVERVIEW CONTAINER */
+    .all-week-view {
+      display: none;
+      padding: 0 20px;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .week-day-block {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .week-day-title {
+      background: #0E121A;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #FFFFFF;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .week-classes-list {
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .week-class-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      padding: 6px 0;
+      border-bottom: 1px solid #141722;
+    }
+    .week-class-row:last-child {
+      border-bottom: none;
+    }
+
+    /* FOOTER INFO */
+    .footer-bar {
+      margin-top: 24px;
+      padding: 0 20px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-info">
+      <h1>Ares Schedule <span>🖤</span></h1>
+      <p id="headerDate">Loading date...</p>
+    </div>
+    <div class="header-badge">2BAC • SP4</div>
+  </header>
+
+  <!-- NOW & NEXT HERO CARD -->
+  <section class="hero-card" id="heroCard">
+    <div class="hero-top">
+      <span class="hero-tag" id="heroTag">⚡ CHECKING STATUS</span>
+      <span class="hero-clock" id="heroClock">--:--:--</span>
+    </div>
+    <div class="hero-title" id="heroTitle">Loading schedule...</div>
+    <div class="hero-sub" id="heroSub">Detecting ongoing sessions</div>
+    <div class="progress-bar-bg" id="heroProgressBg" style="display: none;">
+      <div class="progress-bar-fill" id="heroProgressBar" style="width: 0%;"></div>
+    </div>
+  </section>
+
+  <!-- DAY SELECTOR TABS -->
+  <nav class="tabs-container" id="tabsNav">
+    <button class="tab-pill active" data-day="today"><span class="dot"></span> Today</button>
+    <button class="tab-pill" data-day="1">Mon</button>
+    <button class="tab-pill" data-day="2">Tue</button>
+    <button class="tab-pill" data-day="3">Wed</button>
+    <button class="tab-pill" data-day="4">Thu</button>
+    <button class="tab-pill" data-day="5">Fri</button>
+    <button class="tab-pill" data-day="6">Sat</button>
+    <button class="tab-pill" data-day="week">📅 All Week</button>
+  </nav>
+
+  <!-- SECTION HEADER -->
+  <div class="section-header" id="sectionHeader">
+    <span class="section-title" id="sectionTitle">Today's Schedule</span>
+    <span class="section-stats" id="sectionStats">4 Classes • 4 Hours</span>
+  </div>
+
+  <!-- SINGLE DAY SCHEDULE LIST -->
+  <main class="schedule-list" id="scheduleList">
+    <!-- Populated dynamically via JS -->
+  </main>
+
+  <!-- ALL WEEK OVERVIEW (Toggled) -->
+  <section class="all-week-view" id="allWeekView">
+    <!-- Populated dynamically via JS -->
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer-bar">
+    2BAC SCIENCES PHYSIQUES • ACADEMIC YEAR 2026/2027 • OLED EDITION
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
